@@ -32,7 +32,7 @@ class RoleSeeder extends Seeder
         $publisher = Role::create(['name' => 'publisher']);
         $publisher->givePermissionTo(Permission::all());
 
-        $admin = Role::create(['name' => 'admin']);
         // Gets all permissions via Gate::before rule; see AuthServiceProvider
+        $admin = Role::create(['name' => 'admin']);
     }
 }

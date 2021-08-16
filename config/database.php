@@ -17,6 +17,8 @@ return [
 
     'default' => env('DB_CONNECTION', 'mysql'),
 
+    'factory_user_password' => env('FACTORY_USER_PASSWORD'),
+
     /*
     |--------------------------------------------------------------------------
     | Database Connections

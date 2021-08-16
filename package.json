@@ -13,6 +13,16 @@
         "axios": "^0.21",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "postcss": "^8.1.14",
+        "resolve-url-loader": "^4.0.0",
+        "sass": "^1.37.5",
+        "sass-loader": "^12.1.0"
+    },
+    "dependencies": {
+        "admin-lte": "^3.0.5",
+        "datetime-moment": "^1.0.0",
+        "jquery-ui": "^1.12.1",
+        "moment": "^2.29.1",
+        "popper.js": "^1.16.1"
     }
 }

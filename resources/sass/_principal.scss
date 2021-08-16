@@ -1,0 +1,9 @@
+// None box-shadow
+* {
+    box-shadow: none !important;
+}
+
+// DataTables
+.table-principal td:last-child {
+    text-align: center !important;
+}

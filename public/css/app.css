@@ -37995,3 +37995,7 @@ a.ui-button:active,
 .table-principal td:last-child {
   text-align: center !important;
 }
+
+.brand-link {
+  background-color: white !important;
+}

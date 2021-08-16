@@ -7,15 +7,18 @@ use App\Models\User;
 use App\Http\Requests\CheckInRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SaveProfileRequest;
+use App\Repositories\PostRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
     private $user;
+    private $postRepository;
 
-    public function __construct(User $user) 
+    public function __construct(User $user, PostRepositoryInterface $postRepository) 
     {
-        $this->user=$user;
+        $this->user = $user;
+        $this->postRepository = $postRepository;
     }
 
     public function getLogin() 
@@ -29,7 +32,7 @@ class ProfileController extends Controller
     
     public function postLogin(LoginRequest $request) 
     {
-        $response=$this->user->postLogin($request);
+        $response = $this->user->postLogin($request);
         
         if ($response) {
             return redirect()->route('feed');
@@ -46,7 +49,8 @@ class ProfileController extends Controller
 
     public function getFeed()
     {
-        return view('main.feed', ['menu_active' => 'feed']);
+        $posts=$this->postRepository->paginate(20);
+        return view('main.feed', ['menu_active' => 'feed', 'posts' => $posts]);
     }    
 
     public function getProfile() 

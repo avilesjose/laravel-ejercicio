@@ -49,7 +49,7 @@ class ProfileController extends Controller
 
     public function getFeed()
     {
-        $posts=$this->postRepository->paginate(20);
+        $posts = $this->postRepository->paginateSortedDatetime(20);
         return view('main.feed', ['menu_active' => 'feed', 'posts' => $posts]);
     }    
 

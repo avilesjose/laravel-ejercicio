@@ -24,6 +24,11 @@ class PostRepository implements PostRepositoryInterface
         return $this->model->paginate($perPage);
     }
 
+    public function paginateSortedDatetime($perPage = 10)
+    {
+        return $this->model->orderBy('created_at','desc')->paginate($perPage);
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);
@@ -42,7 +47,7 @@ class PostRepository implements PostRepositoryInterface
     public function find($id)
     {
         if (null == $post = $this->model->find($id)) {
-            throw new ModelNotFoundException("Post not found");
+            throw new ModelNotFoundException('Post not found');
         }
 
         return $post;

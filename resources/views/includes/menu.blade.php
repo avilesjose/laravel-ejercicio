@@ -5,7 +5,7 @@
             <a class="nav-link">
                 <i class="nav-icon far fa-user-circle"></i>
                 <p>
-                    {{Auth::user()->username}}
+                    {{auth()->user()->username}}
                 </p>
             </a>
         </li>

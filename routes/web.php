@@ -18,19 +18,21 @@ use App\Http\Controllers\ProfileController;
 // Authentication
 Route::get('/', [ProfileController::class, 'getLogin'])->name('login');
 Route::post('/login', [ProfileController::class, 'postLogin'])->name('post_login');
-Route::get('/logout', [ProfileController::class, 'logout'])->middleware('auth')->name('logout');
-
 Route::get('/check_in', [ProfileController::class, 'getCheckIn'])->name('get_check_in');
 Route::post('/check_in', [ProfileController::class, 'postCheckIn'])->name('post_check_in');
 
-// Feed
-Route::get('/feed', [ProfileController::class, 'getFeed'])->middleware('auth')->name('feed');
-
-// Resource
+// Group
 Route::middleware('auth')->group(function () {
 
+    // Logout
+    Route::get('/logout', [ProfileController::class, 'logout'])->middleware('auth')->name('logout');
+    
+    // Feed
+    Route::get('/feed', [ProfileController::class, 'getFeed'])->middleware('auth')->name('feed');
+
+    // Resources
     Route::resources([
-        'posts' => PostController::class,
+        '/posts' => PostController::class,
     ]);
 
     // Others

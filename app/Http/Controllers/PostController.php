@@ -77,7 +77,14 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return view('posts.edit', ['post'=>$this->postRepository->find($id)]);
+        $post = $this->postRepository->find($id);
+        $checkUser = $this->user->getCurrent();
+
+        if($checkUser->hasRole('publisher') && $checkUser->id != $post->user_id) {
+            return redirect()->route('feed')->withErrors(['El post con ID '.$id.' no lo puedes editar, le pertenece a otro usuario.']);
+        }
+
+        return view('posts.edit', ['post'=>$post]);
     }
 
     /**
@@ -95,7 +102,7 @@ class PostController extends Controller
         ];
 
         $this->postRepository->update($data, $id);
-        return redirect()->back()->with(['message_info'=>'Post actualizado exitosamente.']);
+        return redirect()->route('posts.edit',['post' => $id])->with(['message_info'=>'Post actualizado exitosamente.']);
     }
 
     /**
@@ -107,6 +114,6 @@ class PostController extends Controller
     public function destroy($id)
     {
         $this->postRepository->delete($id);
-        return redirect()->back()->with(['message_info'=>'Post eliminado exitosamente.']);
+        return redirect()->route('feed')->with(['message_info'=>'Post eliminado exitosamente.']);
     }
 }

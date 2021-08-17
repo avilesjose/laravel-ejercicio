@@ -29,6 +29,11 @@ class User extends Authenticatable
         'nationality',
     ];
 
+    public function posts()
+    {
+        return $this->hasMany('App\Models\Post');
+    }
+
     public static function getCurrent() 
     {
         if (Auth::check()) {

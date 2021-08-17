@@ -22,7 +22,6 @@
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <a href="{{route('feed')}}" class="brand-link">
                     <img src="{{asset('kemok.png')}}" alt="Kemok" class="brand-image rounded">
-                    <span class="brand-text font-weight-light">Kemok</span>
                 </a>
                 <div class="sidebar">
                     @include("includes.menu")

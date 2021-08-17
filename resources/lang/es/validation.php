@@ -154,6 +154,8 @@ return [
         'password'    => 'Contraseña',
         'birthday'    => 'Fecha de nacimiento',
         'username'    => 'Username',
+        'title'       => 'Título',
+        'content'     => 'Contenido',
     ],
     
 ];

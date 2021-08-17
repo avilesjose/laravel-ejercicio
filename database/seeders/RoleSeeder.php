@@ -17,10 +17,8 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {        
-        // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions
         Permission::create(['name' => 'posts.create']);
         Permission::create(['name' => 'posts.edit']);
         Permission::create(['name' => 'posts.trash']);
@@ -28,11 +26,9 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'comments.edit']);
         Permission::create(['name' => 'comments.trash']);
 
-        // Create roles and assign existing permissions
         $publisher = Role::create(['name' => 'publisher']);
         $publisher->givePermissionTo(Permission::all());
 
-        // Gets all permissions via Gate::before rule; see AuthServiceProvider
         $admin = Role::create(['name' => 'admin']);
     }
 }

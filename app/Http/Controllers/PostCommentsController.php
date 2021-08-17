@@ -78,7 +78,7 @@ class PostCommentsController extends Controller
         $checkUser = $this->user->getCurrent();
 
         if($checkUser->hasRole('publisher') && $checkUser->id != $comment->user_id) {
-            return redirect()->route('feed')->withErrors(['El comentario con ID '.$id.' no lo puedes editar, le pertenece a otro usuario.']);
+            return redirect()->route('feed')->withErrors(['El comentario con ID '.$comment->id.' no lo puedes editar, le pertenece a otro usuario.']);
         }
 
         return view('comments.edit', ['post' => $post, 'comment' => $comment]);

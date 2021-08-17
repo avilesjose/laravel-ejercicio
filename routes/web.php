@@ -32,10 +32,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/feed', [ProfileController::class, 'getFeed'])->middleware('auth')->name('feed');
 
     // Resources
-    Route::resources([
-        '/posts' => PostController::class,
-        '/posts.comments' => PostCommentsController::class,
-    ]);
+    Route::middleware(['role:publisher|admin'])->group(function () {
+        Route::resources([
+            '/posts' => PostController::class,
+            '/posts.comments' => PostCommentsController::class,
+        ]);
+    });
 
     // Others
 	Route::get('/profile', [ProfileController::class, 'getProfile'])->middleware('auth')->name('get_profile');

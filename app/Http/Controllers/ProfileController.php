@@ -55,12 +55,12 @@ class ProfileController extends Controller
 
     public function getProfile() 
     {
-        return view('user.profile',['menu_active' => 'profile']);
+        return view('user.profile', ['menu_active' => 'profile']);
     }
 
     public function saveProfile(SaveProfileRequest $request) {
         $this->user->saveProfile($request);
-        return redirect()->route('get_profile')->with(['message_info'=>'Perfil actualizado exitosamente.']);
+        return redirect()->route('get_profile')->with(['message_info' => 'Perfil actualizado exitosamente.']);
     }
 
     public function checkNationality(Request $request)
@@ -80,6 +80,6 @@ class ProfileController extends Controller
     public function postCheckIn(CheckInRequest $request) 
     {
         $this->user->checkIn($request);
-        return redirect()->route('login')->with(['message_info'=>'Te has registrado exitosamente, a continuación puedes iniciar sesión.']);
+        return redirect()->route('login')->with(['message_info' => 'Te has registrado exitosamente, a continuación puedes iniciar sesión.']);
     }
 }

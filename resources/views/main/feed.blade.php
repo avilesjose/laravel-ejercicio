@@ -79,9 +79,11 @@
                         <h3>{{$post->title}}</h3>
                         <p>{{$post->content}}</p>
 
-                        @if(auth()->user()->hasRole('admin') || (auth()->user()->can('posts.trash') && $post->user_id==auth()->user()->id))
-
+                        @if(auth()->user()->hasRole('admin') || (auth()->user()->can('posts.edit') && $post->user_id==auth()->user()->id))
                             <a href="{{route('posts.edit',$post->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                        @endif
+
+                        @if(auth()->user()->hasRole('admin') || (auth()->user()->can('posts.trash') && $post->user_id==auth()->user()->id))
 
                             <form class="d-inline" action="{{route('posts.destroy', [$post->id])}}" method="POST">
                                 @csrf
@@ -91,24 +93,46 @@
                             
                         @endif
                         
-                        <span class="float-right text-muted">3 comments</span>
+                        <span class="float-right text-muted">{{$post->comments->count()}} {{$post->comments->count() == 1 ? 'comentario' : 'comentarios'}}</span>
                     </div>
                     <div class="card-footer card-comments">
+                        @foreach($post->comments->sortBy('created_at') as $comment)
                         <div class="card-comment">
                             <div>
                                 <span class="username">
-                                    Maria Gonzales
-                                    <span class="text-muted float-right">8:03 PM Today</span>
+                                    {{$comment->user->username}}
+                                    <span class="text-muted float-right">
+                                        {{$comment->created_at->format('h:i:s a d/m/Y')}}
+
+                                        @if(auth()->user()->hasRole('admin') || (auth()->user()->can('comments.edit') && $comment->user_id==auth()->user()->id))
+                                            <a href="{{route('posts.comments.edit', [$post->id, $comment->id])}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                        @endif
+
+                                        @if(auth()->user()->hasRole('admin') || (auth()->user()->can('comments.trash') && $comment->user_id==auth()->user()->id))
+                                            
+                                            <form class="d-inline" action="{{route('posts.comments.destroy', [$post->id, $comment->id])}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                            </form>
+
+                                        @endif
+
+                                    </span>
                                 </span>
-                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                                {{$comment->content}}
                             </div>
                         </div>
+                        @endforeach
                     </div>
                     <div class="card-footer">
-                        <form action="#" method="post">
+                        <form action="{{route('posts.comments.store', [$post->id])}}" method="POST">
+                            @csrf
+                            @method("POST")
                             <div class="img-push">
-                                <input type="text" class="form-control form-control-sm" placeholder="Presiona enter para publicar un comentario">
+                                <textarea name="content" type="text" class="form-control form-control-sm" placeholder="Ingresa tu comentario..."></textarea>
                             </div>
+                            <button class="btn btn-success btn-sm mt-1">Comentar</button>
                         </form>
                     </div>
                 </div>

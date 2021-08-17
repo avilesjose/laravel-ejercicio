@@ -1,7 +1,7 @@
 @extends("layouts.main")
 
 @section("titles")
-    <title>Editar post | Kemok</title>
+    <title>Editar comentario | Kemok</title>
 @endsection
 
 @section("content")
@@ -40,24 +40,18 @@
 
             <div class="card card-dark">
                 <div class="card-header">
-                    <h3 class="card-title">Editar post</h3>
+                    <h3 class="card-title">Editar comentario</h3>
                 </div>
-                <form action="{{route('posts.update', [$post->id])}}" method="POST">
+                <form action="{{route('posts.comments.update', [$post->id, $comment->id])}}" method="POST">
                     @csrf
                     @method("PUT")
                     <div class="card-body">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-12">              
-                                    <small class="text-muted">* Título</small>
-                                    <div class="input-group mb-3">
-                                        <input name="title" type="text" class="form-control" placeholder="Ingresa el título" value="{{$post->title}}" required>
-                                    </div>
-                                </div>                              
-                                <div class="col-12">              
                                     <small class="text-muted">* Contenido</small>
                                     <div class="input-group mb-3">
-                                        <textarea name="content" type="text" class="form-control" placeholder="Ingresa el contenido" required>{{$post->content}}</textarea>
+                                        <textarea name="content" type="text" class="form-control" placeholder="Ingresa el contenido" required>{{$comment->content}}</textarea>
                                     </div>
                                 </div>
                             </div>

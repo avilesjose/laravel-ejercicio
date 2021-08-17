@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
     // Resources
     Route::resources([
         '/posts' => PostController::class,
+        '/posts.comments' => PostCommentsController::class,
     ]);
 
     // Others

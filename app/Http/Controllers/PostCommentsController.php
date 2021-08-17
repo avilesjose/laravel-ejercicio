@@ -3,20 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Comment;
+use App\Models\Post;
 use App\Models\User;
-use App\Http\Requests\CreatePostRequest;
-use App\Repositories\PostRepositoryInterface;
+use App\Http\Requests\CreateCommentRequest;
 use Illuminate\Support\Facades\View;
 
-class PostController extends Controller
+class PostCommentsController extends Controller
 {
     private $user;
-    private $postRepository;
 
-    public function __construct(User $user, PostRepositoryInterface $postRepository) 
+    public function __construct(User $user) 
     {
         $this->user = $user;
-        $this->postRepository = $postRepository;
         View::share('menu_active', 'feed');
     }
 
@@ -46,16 +45,15 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreatePostRequest $request)
+    public function store(CreateCommentRequest $request, Post $post)
     {
-        $data = [
-            'title'   => $request->title,
+        Comment::create([
             'content' => $request->content,
+            'post_id' => $post->id,
             'user_id' => $this->user->getCurrent()->id,
-        ];
+        ]);
 
-        $this->postRepository->create($data);
-        return redirect()->route('feed')->with(['message_info' => 'Post publicado exitosamente.']);
+        return redirect()->route('feed')->with(['message_info' => 'Comentario publicado exitosamente.']);
     }
 
     /**
@@ -75,16 +73,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post, Comment $comment)
     {
-        $post = $this->postRepository->find($id);
         $checkUser = $this->user->getCurrent();
 
-        if($checkUser->hasRole('publisher') && $checkUser->id != $post->user_id) {
-            return redirect()->route('feed')->withErrors(['El post con ID '.$id.' no lo puedes editar, le pertenece a otro usuario.']);
+        if($checkUser->hasRole('publisher') && $checkUser->id != $comment->user_id) {
+            return redirect()->route('feed')->withErrors(['El comentario con ID '.$comment->id.' no lo puedes editar, le pertenece a otro usuario.']);
         }
 
-        return view('posts.edit', ['post' => $post]);
+        return view('comments.edit', ['post' => $post, 'comment' => $comment]);
     }
 
     /**
@@ -94,15 +91,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreatePostRequest $request, $id)
+    public function update(CreateCommentRequest $request, Post $post, Comment $comment)
     {
-        $data = [
-            'title'   => $request->title,
+        $comment->update([
             'content' => $request->content,
-        ];
+        ]);
 
-        $this->postRepository->update($data, $id);
-        return redirect()->route('posts.edit', ['post' => $id])->with(['message_info' => 'Post actualizado exitosamente.']);
+        return redirect()->route('posts.comments.edit', ['post' => $post->id, 'comment' => $comment->id])->with(['message_info'=>'Comentario actualizado exitosamente.']);
     }
 
     /**
@@ -111,9 +106,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post, Comment $comment)
     {
-        $this->postRepository->delete($id);
-        return redirect()->route('feed')->with(['message_info' => 'Post eliminado exitosamente.']);
+        $comment->delete();
+        return redirect()->route('feed')->with(['message_info' => 'Comentario eliminado exitosamente.']);
     }
 }
